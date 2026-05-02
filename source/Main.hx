@@ -10,8 +10,14 @@ import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.display.StageScaleMode;
+import openfl.system.System;
 #if mobile
 import mobile.CopyState;
+#end
+#if cpp
+import cpp.vm.Gc;
+#elseif hl
+import hl.Gc;
 #end
 
 using StringTools;
@@ -19,27 +25,21 @@ using StringTools;
 class Main extends Sprite
 {
 	var game = {
-		width: 1280, // WINDOW width
-		height: 720, // WINDOW height
-		initialState: TitleState, // initial game state
-		zoom: -1.0, // game state bounds
-		framerate: 60, // default framerate
-		skipSplash: true, // if the default flixel splash screen should be skipped
-		startFullscreen: false // if the game should start at fullscreen mode
+		width: 1280,
+		height: 720,
+		initialState: TitleState,
+		zoom: -1.0,
+		framerate: 60,
+		skipSplash: true,
+		startFullscreen: false
 	};
 
 	public static var fpsVar:FPS;
-
-	// You can pretty much ignore everything from here on - your code should go in your states.
+	public static var skipNextDump:Bool = false;
 
 	public static function main():Void
 	{
 		Lib.current.addChild(new Main());
-		#if cpp
-		cpp.NativeGc.enable(true);
-		#elseif hl
-		hl.Gc.enable(true);
-		#end
 	}
 
 	public function new()
@@ -57,29 +57,23 @@ class Main extends Sprite
 		@:functionCode("
 		#include <windows.h>
 		#include <winuser.h>
-		setProcessDPIAware() // allows for more crisp visuals
-		DisableProcessWindowsGhosting() // lets you move the window and such if it's not responding
+		setProcessDPIAware()
+		DisableProcessWindowsGhosting()
 		")
 		#end
 
 		super();
 
 		if (stage != null)
-		{
 			init();
-		}
 		else
-		{
-			Lib.current.stage.addEventListener(Event.RESIZE, init);
-		}
+			addEventListener(Event.ADDED_TO_STAGE, init);
 	}
 
-	private function init(?E:Event):Void	
+	private function init(?E:Event):Void
 	{
-		if (Lib.current.stage.hasEventListener(Event.RESIZE))
-		{
-			Lib.current.stage.removeEventListener(Event.RESIZE, init);
-		}
+		if (hasEventListener(Event.ADDED_TO_STAGE))
+			removeEventListener(Event.ADDED_TO_STAGE, init);
 
 		setupGame();
 	}
@@ -102,17 +96,63 @@ class Main extends Sprite
 		if (game.zoom == -1.0)
 			game.zoom = 1.0;
 		#end
-	
-		ClientPrefs.loadDefaultKeys();
-		addChild(new FlxGame(game.width, game.height, #if (mobile && MODS_ALLOWED) !CopyState.checkExistingFiles() ? CopyState : #end game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
 
+		ClientPrefs.loadDefaultKeys();
+
+		addChild(new FlxGame(
+			#if mobile 0, 0 #else game.width, game.height #end,
+			#if (mobile && MODS_ALLOWED) !CopyState.checkExistingFiles() ? CopyState : #end game.initialState,
+			#if (flixel < "5.0.0") game.zoom, #end
+			game.framerate, game.framerate,
+			game.skipSplash,
+			#if mobile true #else game.startFullscreen #end
+		));
+
+		FlxG.signals.preStateSwitch.add(function()
+		{
+			if (!skipNextDump)
+			{
+				Paths.clearStoredMemory();
+				FlxG.bitmap.dumpCache();
+			}
+			clearMemory();
+		});
+
+		FlxG.signals.postStateSwitch.add(function()
+		{
+			Paths.clearUnusedMemory();
+			clearMemory();
+			skipNextDump = false;
+		});
+
+		FlxG.signals.gameResized.add(function(w:Int, h:Int)
+		{
+			if (fpsVar != null)
+				fpsVar.x = 10;
+
+			if (FlxG.cameras != null)
+			{
+				for (cam in FlxG.cameras.list)
+				{
+					@:privateAccess
+					if (cam != null && cam._filters != null)
+						resetSpriteCache(cam.flashSprite);
+				}
+			}
+
+			if (FlxG.game != null)
+				resetSpriteCache(FlxG.game);
+		});
+
+		#if !mobile
 		fpsVar = new FPS(10, 3, 0xFFFFFF);
 		addChild(fpsVar);
+		if (fpsVar != null)
+			fpsVar.visible = ClientPrefs.showFPS;
+		#end
+
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
-		if(fpsVar != null) {
-			fpsVar.visible = ClientPrefs.showFPS;
-		}
 
 		#if html5
 		FlxG.autoPause = false;
@@ -120,10 +160,35 @@ class Main extends Sprite
 		#end
 
 		#if mobile
+		FlxG.autoPause = false;
+		FlxG.fixedTimestep = false;
 		lime.system.System.allowScreenTimeout = ClientPrefs.screensaver;
 		#if android
-		FlxG.android.preventDefaultKeys = [BACK]; 
+		FlxG.android.preventDefaultKeys = [BACK];
 		#end
 		#end
+	}
+
+	static function resetSpriteCache(sprite:Sprite):Void
+	{
+		@:privateAccess
+		{
+			sprite.__cacheBitmap = null;
+			sprite.__cacheBitmapData = null;
+			sprite.__cacheBitmapData2 = null;
+			sprite.__cacheBitmapData3 = null;
+			sprite.__cacheBitmapColorTransform = null;
+		}
+	}
+
+	public static function clearMemory():Void
+	{
+		#if cpp
+		Gc.run(true);
+		Gc.compact();
+		#elseif hl
+		Gc.major();
+		#end
+		System.gc();
 	}
 }
