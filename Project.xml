@@ -2,8 +2,8 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin': Cherry Engine" file="CherryEngine" packageName="com.brenninho.cherryengine" package="com.brenninho.cherryengine" main="Main" version="0.1.0" company="Brenninho" if="desktop" />
-	<app title="FNF: Cherry Engine" file="CherryEngine" packageName="com.brenninho.cherryengine" package="com.brenninho.cherryengine" main="Main" version="0.1.0" company="Brenninho" if="mobile" />
+	<app title="Friday Night Funkin': Cherry Engine" file="CherryEngine" packageName="com.brenninho.cherryengine" package="com.brenninho.cherryengine" main="backend.Main" version="0.1.0" company="Brenninho" if="desktop" />
+	<app title="FNF: Cherry Engine" file="CherryEngine" packageName="com.brenninho.cherryengine" package="com.brenninho.cherryengine" main="backend.Main" version="0.1.0" company="Brenninho" if="mobile" />
 
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
 
