@@ -1,6 +1,6 @@
-# Friday Night Funkin' - Psych Engine v0.6.3 Template
+# Friday Night Funkin' - Cherry Engine
 
-This Template for Making any Mods and Engines you want, with Mobile Support.
+Engine Based in Psych Engine 0.6.3 with tools
 
 ![special](docs/img/special.png)
 
