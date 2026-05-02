@@ -15,12 +15,8 @@ class OutdatedState extends MusicBeatState
 {
 	public static var leftState:Bool = false;
 
-	#if mobile
-	var warnTextMobile:FlxText;
-	#else
 	var warnText:FlxText;
-	#end
-	
+
 	override function create()
 	{
 		super.create();
@@ -28,65 +24,50 @@ class OutdatedState extends MusicBeatState
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);
 
-		#if mobile
-		warnTextMobile = new FlxText(0, 0, FlxG.width,
-			"Sup bro, looks like you're running an   \n
-			outdated version of Psych Engine (" + MainMenuState.psychEngineVersion + "),\n
-			please update to " + TitleState.updateVersion + "!\n
-			Press B to proceed anyway.\n
-			\n
-			Thank you for using the Engine!",
-			32);
-		warnTextMobile.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
-		warnTextMobile.screenCenter(Y);
-		add(warnTextMobile);
-		#else
+		var curVersion:String = Application.current.meta.get('version');
+		var backKey:String = #if mobile "B" #else "ESCAPE" #end;
+
 		warnText = new FlxText(0, 0, FlxG.width,
-			"Sup bro, looks like you're running an   \n
-			outdated version of Psych Engine (" + MainMenuState.psychEngineVersion + "),\n
-			please update to " + TitleState.updateVersion + "!\n
-			Press ESCAPE to proceed anyway.\n
-			\n
-			Thank you for using the Engine!",
+			"Hey! You're running an outdated version (" + curVersion + ").\n\n"
+			+ "Please update to " + TitleState.updateVersion + "!\n\n"
+			+ "Press ACCEPT to open the download page.\n"
+			+ "Press " + backKey + " to proceed anyway.\n\n"
+			+ "Thank you for using the Engine!",
 			32);
 		warnText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 		warnText.screenCenter(Y);
 		add(warnText);
-		#end
 	}
 
 	override function update(elapsed:Float)
 	{
-		if(!leftState) {
-			if (controls.ACCEPT) {
+		if (!leftState)
+		{
+			if (controls.ACCEPT)
+			{
 				leftState = true;
 				CoolUtil.browserLoad("https://github.com/AliAlafandy/FNF-PsychEngine-0.6.3-Template/releases");
 			}
-			else if(controls.BACK) {
+			else if (controls.BACK)
+			{
 				leftState = true;
 			}
 
 			#if mobile
-			if(leftState)
-			{
-				FlxG.sound.play(Paths.sound('cancelMenu'));
-				FlxTween.tween(warnTextMobile, {alpha: 0}, 1, {
-					onComplete: function (twn:FlxTween) {
-						MusicBeatState.switchState(new MainMenuState());
-					}
-				});
-			}
-			#else
-			if(leftState)
+			if (FlxG.touches.list.length > 0 && FlxG.touches.getFirst().justReleased)
+				leftState = true;
+			#end
+
+			if (leftState)
 			{
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				FlxTween.tween(warnText, {alpha: 0}, 1, {
-					onComplete: function (twn:FlxTween) {
+					onComplete: function(twn:FlxTween)
+					{
 						MusicBeatState.switchState(new MainMenuState());
 					}
 				});
 			}
-			#end
 		}
 		super.update(elapsed);
 	}
