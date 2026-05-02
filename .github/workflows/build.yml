@@ -21,15 +21,23 @@ on:
 
 env:
   HAXE_VERSION: 4.2.5
-  PROJECT_NAME: PsychEngine
+  PROJECT_NAME: CherryEngine
 
 jobs:
   build:
-    name: Build
+    name: Build ${{ inputs.name }}
     runs-on: ${{ inputs.os }}
+
     steps:
       - name: Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v4
+
+      - name: Setup Java 17
+        if: inputs.name == 'Android'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
 
       - name: Setup Haxe
         uses: krdlab/setup-haxe@master
@@ -38,7 +46,14 @@ jobs:
 
       - name: Install libVLC
         if: inputs.name == 'Linux'
-        run: sudo apt install libvlc-dev libvlccore-dev
+        run: sudo apt-get install -y libvlc-dev libvlccore-dev
+
+      - name: Cache Haxelibs
+        uses: actions/cache@v4
+        with:
+          path: ~/haxelib
+          key: haxelib-${{ inputs.name }}-${{ hashFiles('**/hmm.json') }}
+          restore-keys: haxelib-${{ inputs.name }}-
 
       - name: Install Libraries
         run: |
@@ -50,8 +65,34 @@ jobs:
         run: |
           haxelib run lime config ANDROID_SDK $ANDROID_HOME
           haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_LATEST_HOME
-          haxelib run lime config JAVA_HOME $JAVA_HOME_17_arm64
+          haxelib run lime config JAVA_HOME $JAVA_HOME_17_X64
           haxelib run lime config ANDROID_SETUP true
+
+      - name: Generate Keystore
+        if: inputs.name == 'Android'
+        run: |
+          rm -f key.keystore
+          keytool -genkeypair -v \
+            -keystore key.keystore \
+            -storetype JKS \
+            -alias psychengine \
+            -storepass psychengine \
+            -keypass psychengine \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -dname "CN=CherryEngine, OU=Dev, O=Brenninho, L=BR, ST=BR, C=BR"
+
+      - name: Verify Keystore
+        if: inputs.name == 'Android'
+        run: keytool -list -keystore key.keystore -storepass psychengine
+
+      - name: Cache hxcpp
+        uses: actions/cache@v4
+        with:
+          path: ~/.hxcpp
+          key: hxcpp-${{ inputs.name }}-${{ hashFiles('**/Project.xml') }}
+          restore-keys: hxcpp-${{ inputs.name }}-
 
       - name: Compile
         run: haxelib run lime build ${{ inputs.buildArgs }}
@@ -60,12 +101,12 @@ jobs:
         if: inputs.name == 'iOS'
         run: |
           cd export/release/ios/build/Release-iphoneos
-          mkdir Payload
+          mkdir -p Payload
           mv *.app Payload
           zip -r ${{ env.PROJECT_NAME }}.ipa Payload
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.artifactName }}
           path: ${{ inputs.artifactPath }}
