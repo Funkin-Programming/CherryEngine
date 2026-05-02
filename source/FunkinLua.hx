@@ -1,5 +1,7 @@
 package;
 
+import lime.app.Application;
+
 import openfl.display.BitmapData;
 
 #if LUA_ALLOWED
@@ -170,7 +172,8 @@ class FunkinLua {
 		set('rating', 0);
 		set('ratingName', '');
 		set('ratingFC', '');
-		set('version', MainMenuState.psychEngineVersion.trim());
+		set('version', Application.current.meta.get('version'));
+      set('appTitle', Application.current.meta.get('title'));
 
 		set('inGameOver', false);
 		set('mustHitSection', false);
