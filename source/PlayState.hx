@@ -1103,11 +1103,9 @@ class PlayState extends MusicBeatState
 		// startCountdown();
 
 		#if mobile
-		#if !android
 		addTouchPad("NONE", "P");
 		addTouchPadCamera();
 		touchPad.visible = true;
-		#end
 		#end
 		
 		#if mobile
@@ -2353,7 +2351,7 @@ class PlayState extends MusicBeatState
 	{
 		scoreTxt.text = 'Score: ' + songScore
 		+ ' | Misses: ' + songMisses
-		+ ' | Rating: ' + ratingName
+		+ ' | Accuracy: ' + ratingName
 		+ (ratingName != '?' ? ' (${Highscore.floorDecimal(ratingPercent * 100, 2)}%) - $ratingFC' : '');
 
 		if(ClientPrefs.scoreZoom && !miss && !cpuControlled)
@@ -3085,7 +3083,7 @@ class PlayState extends MusicBeatState
 		#if mobile
 		if (
 		#if android
-		FlxG.android.justReleased.BACK
+		touchPad.buttonP.justPressed
 		#else
 		touchPad.buttonP.justPressed
 		#end
