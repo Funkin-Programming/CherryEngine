@@ -207,8 +207,8 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.showFPS != null) {
 			showFPS = FlxG.save.data.showFPS;
-			if(Main.fpsVar != null) {
-				Main.fpsVar.visible = showFPS;
+			if(backend.Main.fpsVar != null) {
+				backend.Main.fpsVar.visible = showFPS;
 			}
 		}
 		if(FlxG.save.data.flashing != null) {
