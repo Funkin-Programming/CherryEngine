@@ -21,8 +21,7 @@
 
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false" />
 
-	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" resizable="false"
-		allow-shaders="true" require-shaders="true" allow-high-dpi="true" />
+	<window if="mobile" orientation="landscape" fullscreen="true" resizable="false" allow-shaders="true" require-shaders="true" />
 
 	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
 
