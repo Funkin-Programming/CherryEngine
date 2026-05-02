@@ -17,68 +17,68 @@ using StringTools;
 #if (haxe >= "4.0.0")
 enum abstract Action(String) to String from String
 {
-	var UI_UP = "ui_up";
-	var UI_LEFT = "ui_left";
-	var UI_RIGHT = "ui_right";
-	var UI_DOWN = "ui_down";
-	var UI_UP_P = "ui_up-press";
-	var UI_LEFT_P = "ui_left-press";
+	var UI_UP      = "ui_up";
+	var UI_LEFT    = "ui_left";
+	var UI_RIGHT   = "ui_right";
+	var UI_DOWN    = "ui_down";
+	var UI_UP_P    = "ui_up-press";
+	var UI_LEFT_P  = "ui_left-press";
 	var UI_RIGHT_P = "ui_right-press";
-	var UI_DOWN_P = "ui_down-press";
-	var UI_UP_R = "ui_up-release";
-	var UI_LEFT_R = "ui_left-release";
+	var UI_DOWN_P  = "ui_down-press";
+	var UI_UP_R    = "ui_up-release";
+	var UI_LEFT_R  = "ui_left-release";
 	var UI_RIGHT_R = "ui_right-release";
-	var UI_DOWN_R = "ui_down-release";
-	var NOTE_UP = "note_up";
-	var NOTE_LEFT = "note_left";
-	var NOTE_RIGHT = "note_right";
-	var NOTE_DOWN = "note_down";
-	var NOTE_UP_P = "note_up-press";
-	var NOTE_LEFT_P = "note_left-press";
+	var UI_DOWN_R  = "ui_down-release";
+	var NOTE_UP      = "note_up";
+	var NOTE_LEFT    = "note_left";
+	var NOTE_RIGHT   = "note_right";
+	var NOTE_DOWN    = "note_down";
+	var NOTE_UP_P    = "note_up-press";
+	var NOTE_LEFT_P  = "note_left-press";
 	var NOTE_RIGHT_P = "note_right-press";
-	var NOTE_DOWN_P = "note_down-press";
-	var NOTE_UP_R = "note_up-release";
-	var NOTE_LEFT_R = "note_left-release";
+	var NOTE_DOWN_P  = "note_down-press";
+	var NOTE_UP_R    = "note_up-release";
+	var NOTE_LEFT_R  = "note_left-release";
 	var NOTE_RIGHT_R = "note_right-release";
-	var NOTE_DOWN_R = "note_down-release";
-	var ACCEPT = "accept";
-	var BACK = "back";
-	var PAUSE = "pause";
-	var RESET = "reset";
+	var NOTE_DOWN_R  = "note_down-release";
+	var ACCEPT     = "accept";
+	var BACK       = "back";
+	var PAUSE      = "pause";
+	var RESET      = "reset";
 	var FULLSCREEN = "fullscreen";
 }
 #else
 @:enum
 abstract Action(String) to String from String
 {
-	var UI_UP = "ui_up";
-	var UI_LEFT = "ui_left";
-	var UI_RIGHT = "ui_right";
-	var UI_DOWN = "ui_down";
-	var UI_UP_P = "ui_up-press";
-	var UI_LEFT_P = "ui_left-press";
+	var UI_UP      = "ui_up";
+	var UI_LEFT    = "ui_left";
+	var UI_RIGHT   = "ui_right";
+	var UI_DOWN    = "ui_down";
+	var UI_UP_P    = "ui_up-press";
+	var UI_LEFT_P  = "ui_left-press";
 	var UI_RIGHT_P = "ui_right-press";
-	var UI_DOWN_P = "ui_down-press";
-	var UI_UP_R = "ui_up-release";
-	var UI_LEFT_R = "ui_left-release";
+	var UI_DOWN_P  = "ui_down-press";
+	var UI_UP_R    = "ui_up-release";
+	var UI_LEFT_R  = "ui_left-release";
 	var UI_RIGHT_R = "ui_right-release";
-	var UI_DOWN_R = "ui_down-release";
-	var NOTE_UP = "note_up";
-	var NOTE_LEFT = "note_left";
-	var NOTE_RIGHT = "note_right";
-	var NOTE_DOWN = "note_down";
-	var NOTE_UP_P = "note_up-press";
-	var NOTE_LEFT_P = "note_left-press";
+	var UI_DOWN_R  = "ui_down-release";
+	var NOTE_UP      = "note_up";
+	var NOTE_LEFT    = "note_left";
+	var NOTE_RIGHT   = "note_right";
+	var NOTE_DOWN    = "note_down";
+	var NOTE_UP_P    = "note_up-press";
+	var NOTE_LEFT_P  = "note_left-press";
 	var NOTE_RIGHT_P = "note_right-press";
-	var NOTE_DOWN_P = "note_down-press";
-	var NOTE_UP_R = "note_up-release";
-	var NOTE_LEFT_R = "note_left-release";
+	var NOTE_DOWN_P  = "note_down-press";
+	var NOTE_UP_R    = "note_up-release";
+	var NOTE_LEFT_R  = "note_left-release";
 	var NOTE_RIGHT_R = "note_right-release";
-	var NOTE_DOWN_R = "note_down-release";
-	var ACCEPT = "accept";
-	var BACK = "back";
-	var PAUSE = "pause";
-	var RESET = "reset";
+	var NOTE_DOWN_R  = "note_down-release";
+	var ACCEPT     = "accept";
+	var BACK       = "back";
+	var PAUSE      = "pause";
+	var RESET      = "reset";
 	var FULLSCREEN = "fullscreen";
 }
 #end
@@ -116,10 +116,10 @@ enum KeyboardScheme
 
 class Controls extends FlxActionSet
 {
-	var _ui_up    = new FlxActionDigital(Action.UI_UP);
-	var _ui_left  = new FlxActionDigital(Action.UI_LEFT);
-	var _ui_right = new FlxActionDigital(Action.UI_RIGHT);
-	var _ui_down  = new FlxActionDigital(Action.UI_DOWN);
+	var _ui_up     = new FlxActionDigital(Action.UI_UP);
+	var _ui_left   = new FlxActionDigital(Action.UI_LEFT);
+	var _ui_right  = new FlxActionDigital(Action.UI_RIGHT);
+	var _ui_down   = new FlxActionDigital(Action.UI_DOWN);
 	var _ui_upP    = new FlxActionDigital(Action.UI_UP_P);
 	var _ui_leftP  = new FlxActionDigital(Action.UI_LEFT_P);
 	var _ui_rightP = new FlxActionDigital(Action.UI_RIGHT_P);
@@ -128,10 +128,10 @@ class Controls extends FlxActionSet
 	var _ui_leftR  = new FlxActionDigital(Action.UI_LEFT_R);
 	var _ui_rightR = new FlxActionDigital(Action.UI_RIGHT_R);
 	var _ui_downR  = new FlxActionDigital(Action.UI_DOWN_R);
-	var _note_up    = new FlxActionDigital(Action.NOTE_UP);
-	var _note_left  = new FlxActionDigital(Action.NOTE_LEFT);
-	var _note_right = new FlxActionDigital(Action.NOTE_RIGHT);
-	var _note_down  = new FlxActionDigital(Action.NOTE_DOWN);
+	var _note_up     = new FlxActionDigital(Action.NOTE_UP);
+	var _note_left   = new FlxActionDigital(Action.NOTE_LEFT);
+	var _note_right  = new FlxActionDigital(Action.NOTE_RIGHT);
+	var _note_down   = new FlxActionDigital(Action.NOTE_DOWN);
 	var _note_upP    = new FlxActionDigital(Action.NOTE_UP_P);
 	var _note_leftP  = new FlxActionDigital(Action.NOTE_LEFT_P);
 	var _note_rightP = new FlxActionDigital(Action.NOTE_RIGHT_P);
@@ -157,76 +157,76 @@ class Controls extends FlxActionSet
 	public var isInSubstate:Bool = false;
 
 	public var UI_UP(get, never):Bool;
-	inline function get_UI_UP() return _ui_up.check() || mobileControlsPressed(MobileInputID.UP);
+	inline function get_UI_UP()    return _ui_up.check()    || mobileControlsPressed(MobileInputID.UP);
 
 	public var UI_LEFT(get, never):Bool;
-	inline function get_UI_LEFT() return _ui_left.check() || mobileControlsPressed(MobileInputID.LEFT);
+	inline function get_UI_LEFT()  return _ui_left.check()  || mobileControlsPressed(MobileInputID.LEFT);
 
 	public var UI_RIGHT(get, never):Bool;
 	inline function get_UI_RIGHT() return _ui_right.check() || mobileControlsPressed(MobileInputID.RIGHT);
 
 	public var UI_DOWN(get, never):Bool;
-	inline function get_UI_DOWN() return _ui_down.check() || mobileControlsPressed(MobileInputID.DOWN);
+	inline function get_UI_DOWN()  return _ui_down.check()  || mobileControlsPressed(MobileInputID.DOWN);
 
 	public var UI_UP_P(get, never):Bool;
-	inline function get_UI_UP_P() return _ui_upP.check() || mobileControlsJustPressed(MobileInputID.UP);
+	inline function get_UI_UP_P()    return _ui_upP.check()    || mobileControlsJustPressed(MobileInputID.UP);
 
 	public var UI_LEFT_P(get, never):Bool;
-	inline function get_UI_LEFT_P() return _ui_leftP.check() || mobileControlsJustPressed(MobileInputID.LEFT);
+	inline function get_UI_LEFT_P()  return _ui_leftP.check()  || mobileControlsJustPressed(MobileInputID.LEFT);
 
 	public var UI_RIGHT_P(get, never):Bool;
 	inline function get_UI_RIGHT_P() return _ui_rightP.check() || mobileControlsJustPressed(MobileInputID.RIGHT);
 
 	public var UI_DOWN_P(get, never):Bool;
-	inline function get_UI_DOWN_P() return _ui_downP.check() || mobileControlsJustPressed(MobileInputID.DOWN);
+	inline function get_UI_DOWN_P()  return _ui_downP.check()  || mobileControlsJustPressed(MobileInputID.DOWN);
 
 	public var UI_UP_R(get, never):Bool;
-	inline function get_UI_UP_R() return _ui_upR.check() || mobileControlsJustReleased(MobileInputID.UP);
+	inline function get_UI_UP_R()    return _ui_upR.check()    || mobileControlsJustReleased(MobileInputID.UP);
 
 	public var UI_LEFT_R(get, never):Bool;
-	inline function get_UI_LEFT_R() return _ui_leftR.check() || mobileControlsJustReleased(MobileInputID.LEFT);
+	inline function get_UI_LEFT_R()  return _ui_leftR.check()  || mobileControlsJustReleased(MobileInputID.LEFT);
 
 	public var UI_RIGHT_R(get, never):Bool;
 	inline function get_UI_RIGHT_R() return _ui_rightR.check() || mobileControlsJustReleased(MobileInputID.RIGHT);
 
 	public var UI_DOWN_R(get, never):Bool;
-	inline function get_UI_DOWN_R() return _ui_downR.check() || mobileControlsJustReleased(MobileInputID.DOWN);
+	inline function get_UI_DOWN_R()  return _ui_downR.check()  || mobileControlsJustReleased(MobileInputID.DOWN);
 
 	public var NOTE_UP(get, never):Bool;
-	inline function get_NOTE_UP() return _note_up.check() || mobileControlsPressed(MobileInputID.NOTE_UP);
+	inline function get_NOTE_UP()    return _note_up.check()    || mobileControlsPressed(MobileInputID.NOTE_UP);
 
 	public var NOTE_LEFT(get, never):Bool;
-	inline function get_NOTE_LEFT() return _note_left.check() || mobileControlsPressed(MobileInputID.NOTE_LEFT);
+	inline function get_NOTE_LEFT()  return _note_left.check()  || mobileControlsPressed(MobileInputID.NOTE_LEFT);
 
 	public var NOTE_RIGHT(get, never):Bool;
 	inline function get_NOTE_RIGHT() return _note_right.check() || mobileControlsPressed(MobileInputID.NOTE_RIGHT);
 
 	public var NOTE_DOWN(get, never):Bool;
-	inline function get_NOTE_DOWN() return _note_down.check() || mobileControlsPressed(MobileInputID.NOTE_DOWN);
+	inline function get_NOTE_DOWN()  return _note_down.check()  || mobileControlsPressed(MobileInputID.NOTE_DOWN);
 
 	public var NOTE_UP_P(get, never):Bool;
-	inline function get_NOTE_UP_P() return _note_upP.check() || mobileControlsJustPressed(MobileInputID.NOTE_UP);
+	inline function get_NOTE_UP_P()    return _note_upP.check()    || mobileControlsJustPressed(MobileInputID.NOTE_UP);
 
 	public var NOTE_LEFT_P(get, never):Bool;
-	inline function get_NOTE_LEFT_P() return _note_leftP.check() || mobileControlsJustPressed(MobileInputID.NOTE_LEFT);
+	inline function get_NOTE_LEFT_P()  return _note_leftP.check()  || mobileControlsJustPressed(MobileInputID.NOTE_LEFT);
 
 	public var NOTE_RIGHT_P(get, never):Bool;
 	inline function get_NOTE_RIGHT_P() return _note_rightP.check() || mobileControlsJustPressed(MobileInputID.NOTE_RIGHT);
 
 	public var NOTE_DOWN_P(get, never):Bool;
-	inline function get_NOTE_DOWN_P() return _note_downP.check() || mobileControlsJustPressed(MobileInputID.NOTE_DOWN);
+	inline function get_NOTE_DOWN_P()  return _note_downP.check()  || mobileControlsJustPressed(MobileInputID.NOTE_DOWN);
 
 	public var NOTE_UP_R(get, never):Bool;
-	inline function get_NOTE_UP_R() return _note_upR.check() || mobileControlsJustReleased(MobileInputID.NOTE_UP);
+	inline function get_NOTE_UP_R()    return _note_upR.check()    || mobileControlsJustReleased(MobileInputID.NOTE_UP);
 
 	public var NOTE_LEFT_R(get, never):Bool;
-	inline function get_NOTE_LEFT_R() return _note_leftR.check() || mobileControlsJustReleased(MobileInputID.NOTE_LEFT);
+	inline function get_NOTE_LEFT_R()  return _note_leftR.check()  || mobileControlsJustReleased(MobileInputID.NOTE_LEFT);
 
 	public var NOTE_RIGHT_R(get, never):Bool;
 	inline function get_NOTE_RIGHT_R() return _note_rightR.check() || mobileControlsJustReleased(MobileInputID.NOTE_RIGHT);
 
 	public var NOTE_DOWN_R(get, never):Bool;
-	inline function get_NOTE_DOWN_R() return _note_downR.check() || mobileControlsJustReleased(MobileInputID.NOTE_DOWN);
+	inline function get_NOTE_DOWN_R()  return _note_downR.check()  || mobileControlsJustReleased(MobileInputID.NOTE_DOWN);
 
 	public var ACCEPT(get, never):Bool;
 	inline function get_ACCEPT() return _accept.check() || mobileControlsJustPressed(MobileInputID.A);
@@ -271,7 +271,7 @@ class Controls extends FlxActionSet
 
 	function _init()
 	{
-		var actions = [
+		var actions:Array<FlxActionDigital> = [
 			_ui_up, _ui_left, _ui_right, _ui_down,
 			_ui_upP, _ui_leftP, _ui_rightP, _ui_downP,
 			_ui_upR, _ui_leftR, _ui_rightR, _ui_downR,
@@ -285,9 +285,7 @@ class Controls extends FlxActionSet
 	}
 
 	override function update()
-	{
 		super.update();
-	}
 
 	public inline function checkByName(name:Action):Bool
 	{
@@ -298,9 +296,7 @@ class Controls extends FlxActionSet
 	}
 
 	public function justReleased(name:String):Bool
-	{
 		return byName.exists(name) ? byName[name].check() : false;
-	}
 
 	public function getDialogueName(action:FlxActionDigital):String
 	{
@@ -308,8 +304,8 @@ class Controls extends FlxActionSet
 		return switch input.device
 		{
 			case KEYBOARD: '[${(input.inputID : FlxKey)}]';
-			case GAMEPAD: '(${(input.inputID : FlxGamepadInputID)})';
-			case device: throw 'unhandled device: $device';
+			case GAMEPAD:  '(${(input.inputID : FlxGamepadInputID)})';
+			case device:   throw 'unhandled device: $device';
 		}
 	}
 
@@ -320,26 +316,25 @@ class Controls extends FlxActionSet
 	{
 		return switch (control)
 		{
-			case UI_UP: _ui_up;
-			case UI_DOWN: _ui_down;
-			case UI_LEFT: _ui_left;
-			case UI_RIGHT: _ui_right;
-			case NOTE_UP: _note_up;
+			case UI_UP:     _ui_up;
+			case UI_DOWN:   _ui_down;
+			case UI_LEFT:   _ui_left;
+			case UI_RIGHT:  _ui_right;
+			case NOTE_UP:   _note_up;
 			case NOTE_DOWN: _note_down;
 			case NOTE_LEFT: _note_left;
 			case NOTE_RIGHT: _note_right;
-			case ACCEPT: _accept;
-			case BACK: _back;
-			case PAUSE: _pause;
-			case RESET: _reset;
+			case ACCEPT:    _accept;
+			case BACK:      _back;
+			case PAUSE:     _pause;
+			case RESET:     _reset;
 			case FULLSCREEN: _fullscreen;
 		}
 	}
 
 	static function init():Void
 	{
-		var actions = new FlxActionManager();
-		FlxG.inputs.add(actions);
+		FlxG.inputs.add(new FlxActionManager());
 	}
 
 	function forEachBound(control:Control, func:FlxActionDigital->FlxInputState->Void)
@@ -362,16 +357,11 @@ class Controls extends FlxActionSet
 				func(_note_right, PRESSED); func(_note_rightP, JUST_PRESSED); func(_note_rightR, JUST_RELEASED);
 			case NOTE_DOWN:
 				func(_note_down, PRESSED); func(_note_downP, JUST_PRESSED); func(_note_downR, JUST_RELEASED);
-			case ACCEPT:
-				func(_accept, JUST_PRESSED);
-			case BACK:
-				func(_back, JUST_PRESSED);
-			case PAUSE:
-				func(_pause, JUST_PRESSED);
-			case RESET:
-				func(_reset, JUST_PRESSED);
-			case FULLSCREEN:
-				func(_fullscreen, JUST_PRESSED);
+			case ACCEPT:    func(_accept,     JUST_PRESSED);
+			case BACK:      func(_back,       JUST_PRESSED);
+			case PAUSE:     func(_pause,      JUST_PRESSED);
+			case RESET:     func(_reset,      JUST_PRESSED);
+			case FULLSCREEN: func(_fullscreen, JUST_PRESSED);
 		}
 	}
 
@@ -382,10 +372,10 @@ class Controls extends FlxActionSet
 		{
 			case Keys:
 				if (toRemove != null) unbindKeys(control, [toRemove]);
-				if (toAdd != null) bindKeys(control, [toAdd]);
+				if (toAdd != null)    bindKeys(control, [toAdd]);
 			case Gamepad(id):
 				if (toRemove != null) unbindButtons(control, id, [toRemove]);
-				if (toAdd != null) bindButtons(control, id, [toAdd]);
+				if (toAdd != null)    bindButtons(control, id, [toAdd]);
 		}
 	}
 
@@ -417,10 +407,8 @@ class Controls extends FlxActionSet
 					if (gamepadsAdded.indexOf(gamepad) == -1) gamepadsAdded.push(gamepad);
 				#end
 				mergeKeyboardScheme(controls.keyboardScheme);
-			case Gamepad(id):
-				gamepadsAdded.push(id);
-			case Keys:
-				mergeKeyboardScheme(controls.keyboardScheme);
+			case Gamepad(id): gamepadsAdded.push(id);
+			case Keys:        mergeKeyboardScheme(controls.keyboardScheme);
 		}
 	}
 
@@ -430,19 +418,12 @@ class Controls extends FlxActionSet
 	function mergeKeyboardScheme(scheme:KeyboardScheme):Void
 	{
 		if (scheme != None)
-		{
-			switch (keyboardScheme)
-			{
-				case None: keyboardScheme = scheme;
-				default: keyboardScheme = Custom;
-			}
-		}
+			keyboardScheme = (keyboardScheme == None) ? scheme : Custom;
 	}
 
 	public function bindKeys(control:Control, keys:Array<FlxKey>)
 	{
-		var copyKeys = keys.copy();
-		copyKeys = copyKeys.filter(k -> k != FlxKey.NONE);
+		var copyKeys = keys.copy().filter(k -> k != FlxKey.NONE);
 		#if (haxe >= "4.0.0")
 		inline forEachBound(control, (action, state) -> addKeys(action, copyKeys, state));
 		#else
@@ -452,8 +433,7 @@ class Controls extends FlxActionSet
 
 	public function unbindKeys(control:Control, keys:Array<FlxKey>)
 	{
-		var copyKeys = keys.copy();
-		copyKeys = copyKeys.filter(k -> k != FlxKey.NONE);
+		var copyKeys = keys.copy().filter(k -> k != FlxKey.NONE);
 		#if (haxe >= "4.0.0")
 		inline forEachBound(control, (action, _) -> removeKeys(action, copyKeys));
 		#else
@@ -482,84 +462,84 @@ class Controls extends FlxActionSet
 	{
 		if (reset) removeKeyboard();
 		keyboardScheme = scheme;
-		var keysMap = ClientPrefs.keyBinds;
+		var k = ClientPrefs.keyBinds;
 
 		#if (haxe >= "4.0.0")
 		switch (scheme)
 		{
 			case Solo:
-				inline bindKeys(Control.UI_UP,    keysMap.get('ui_up'));
-				inline bindKeys(Control.UI_DOWN,  keysMap.get('ui_down'));
-				inline bindKeys(Control.UI_LEFT,  keysMap.get('ui_left'));
-				inline bindKeys(Control.UI_RIGHT, keysMap.get('ui_right'));
-				inline bindKeys(Control.NOTE_UP,    keysMap.get('note_up'));
-				inline bindKeys(Control.NOTE_DOWN,  keysMap.get('note_down'));
-				inline bindKeys(Control.NOTE_LEFT,  keysMap.get('note_left'));
-				inline bindKeys(Control.NOTE_RIGHT, keysMap.get('note_right'));
-				inline bindKeys(Control.ACCEPT,     keysMap.get('accept'));
-				inline bindKeys(Control.BACK,       keysMap.get('back'));
-				inline bindKeys(Control.PAUSE,      keysMap.get('pause'));
-				inline bindKeys(Control.RESET,      keysMap.get('reset'));
-				inline bindKeys(Control.FULLSCREEN, [FlxKey.F11]);
+				inline bindKeys(Control.UI_UP,     k.get('ui_up'));
+				inline bindKeys(Control.UI_DOWN,   k.get('ui_down'));
+				inline bindKeys(Control.UI_LEFT,   k.get('ui_left'));
+				inline bindKeys(Control.UI_RIGHT,  k.get('ui_right'));
+				inline bindKeys(Control.NOTE_UP,   k.get('note_up'));
+				inline bindKeys(Control.NOTE_DOWN, k.get('note_down'));
+				inline bindKeys(Control.NOTE_LEFT, k.get('note_left'));
+				inline bindKeys(Control.NOTE_RIGHT,k.get('note_right'));
+				inline bindKeys(Control.ACCEPT,    k.get('accept'));
+				inline bindKeys(Control.BACK,      k.get('back'));
+				inline bindKeys(Control.PAUSE,     k.get('pause'));
+				inline bindKeys(Control.RESET,     k.get('reset'));
+				inline bindKeys(Control.FULLSCREEN,[FlxKey.F11]);
 			case Duo(true):
-				inline bindKeys(Control.UI_UP,    [W]);
-				inline bindKeys(Control.UI_DOWN,  [S]);
-				inline bindKeys(Control.UI_LEFT,  [A]);
-				inline bindKeys(Control.UI_RIGHT, [D]);
-				inline bindKeys(Control.NOTE_UP,    [W]);
-				inline bindKeys(Control.NOTE_DOWN,  [S]);
-				inline bindKeys(Control.NOTE_LEFT,  [A]);
-				inline bindKeys(Control.NOTE_RIGHT, [D]);
-				inline bindKeys(Control.ACCEPT, [G, Z]);
-				inline bindKeys(Control.BACK,   [H, X]);
-				inline bindKeys(Control.PAUSE,  [ONE]);
-				inline bindKeys(Control.RESET,  [R]);
+				inline bindKeys(Control.UI_UP,     [W]);
+				inline bindKeys(Control.UI_DOWN,   [S]);
+				inline bindKeys(Control.UI_LEFT,   [A]);
+				inline bindKeys(Control.UI_RIGHT,  [D]);
+				inline bindKeys(Control.NOTE_UP,   [W]);
+				inline bindKeys(Control.NOTE_DOWN, [S]);
+				inline bindKeys(Control.NOTE_LEFT, [A]);
+				inline bindKeys(Control.NOTE_RIGHT,[D]);
+				inline bindKeys(Control.ACCEPT,    [G, Z]);
+				inline bindKeys(Control.BACK,      [H, X]);
+				inline bindKeys(Control.PAUSE,     [ONE]);
+				inline bindKeys(Control.RESET,     [R]);
 			case Duo(false):
-				inline bindKeys(Control.UI_UP,    [FlxKey.UP]);
-				inline bindKeys(Control.UI_DOWN,  [FlxKey.DOWN]);
-				inline bindKeys(Control.UI_LEFT,  [FlxKey.LEFT]);
-				inline bindKeys(Control.UI_RIGHT, [FlxKey.RIGHT]);
-				inline bindKeys(Control.NOTE_UP,    [FlxKey.UP]);
-				inline bindKeys(Control.NOTE_DOWN,  [FlxKey.DOWN]);
-				inline bindKeys(Control.NOTE_LEFT,  [FlxKey.LEFT]);
-				inline bindKeys(Control.NOTE_RIGHT, [FlxKey.RIGHT]);
-				inline bindKeys(Control.ACCEPT, [O]);
-				inline bindKeys(Control.BACK,   [P]);
-				inline bindKeys(Control.PAUSE,  [ENTER]);
-				inline bindKeys(Control.RESET,  [BACKSPACE]);
+				inline bindKeys(Control.UI_UP,     [FlxKey.UP]);
+				inline bindKeys(Control.UI_DOWN,   [FlxKey.DOWN]);
+				inline bindKeys(Control.UI_LEFT,   [FlxKey.LEFT]);
+				inline bindKeys(Control.UI_RIGHT,  [FlxKey.RIGHT]);
+				inline bindKeys(Control.NOTE_UP,   [FlxKey.UP]);
+				inline bindKeys(Control.NOTE_DOWN, [FlxKey.DOWN]);
+				inline bindKeys(Control.NOTE_LEFT, [FlxKey.LEFT]);
+				inline bindKeys(Control.NOTE_RIGHT,[FlxKey.RIGHT]);
+				inline bindKeys(Control.ACCEPT,    [O]);
+				inline bindKeys(Control.BACK,      [P]);
+				inline bindKeys(Control.PAUSE,     [ENTER]);
+				inline bindKeys(Control.RESET,     [BACKSPACE]);
 			case None | Custom:
 		}
 		#else
 		switch (scheme)
 		{
 			case Solo:
-				bindKeys(Control.UI_UP,    keysMap.get('ui_up'));
-				bindKeys(Control.UI_DOWN,  keysMap.get('ui_down'));
-				bindKeys(Control.UI_LEFT,  keysMap.get('ui_left'));
-				bindKeys(Control.UI_RIGHT, keysMap.get('ui_right'));
-				bindKeys(Control.NOTE_UP,    keysMap.get('note_up'));
-				bindKeys(Control.NOTE_DOWN,  keysMap.get('note_down'));
-				bindKeys(Control.NOTE_LEFT,  keysMap.get('note_left'));
-				bindKeys(Control.NOTE_RIGHT, keysMap.get('note_right'));
-				bindKeys(Control.ACCEPT,     keysMap.get('accept'));
-				bindKeys(Control.BACK,       keysMap.get('back'));
-				bindKeys(Control.PAUSE,      keysMap.get('pause'));
-				bindKeys(Control.RESET,      keysMap.get('reset'));
-				bindKeys(Control.FULLSCREEN, [FlxKey.F11]);
+				bindKeys(Control.UI_UP,     k.get('ui_up'));
+				bindKeys(Control.UI_DOWN,   k.get('ui_down'));
+				bindKeys(Control.UI_LEFT,   k.get('ui_left'));
+				bindKeys(Control.UI_RIGHT,  k.get('ui_right'));
+				bindKeys(Control.NOTE_UP,   k.get('note_up'));
+				bindKeys(Control.NOTE_DOWN, k.get('note_down'));
+				bindKeys(Control.NOTE_LEFT, k.get('note_left'));
+				bindKeys(Control.NOTE_RIGHT,k.get('note_right'));
+				bindKeys(Control.ACCEPT,    k.get('accept'));
+				bindKeys(Control.BACK,      k.get('back'));
+				bindKeys(Control.PAUSE,     k.get('pause'));
+				bindKeys(Control.RESET,     k.get('reset'));
+				bindKeys(Control.FULLSCREEN,[FlxKey.F11]);
 			case Duo(true):
-				bindKeys(Control.UI_UP, [W]); bindKeys(Control.UI_DOWN, [S]);
-				bindKeys(Control.UI_LEFT, [A]); bindKeys(Control.UI_RIGHT, [D]);
-				bindKeys(Control.NOTE_UP, [W]); bindKeys(Control.NOTE_DOWN, [S]);
-				bindKeys(Control.NOTE_LEFT, [A]); bindKeys(Control.NOTE_RIGHT, [D]);
-				bindKeys(Control.ACCEPT, [G, Z]); bindKeys(Control.BACK, [H, X]);
-				bindKeys(Control.PAUSE, [ONE]); bindKeys(Control.RESET, [R]);
+				bindKeys(Control.UI_UP,    [W]);    bindKeys(Control.UI_DOWN,  [S]);
+				bindKeys(Control.UI_LEFT,  [A]);    bindKeys(Control.UI_RIGHT, [D]);
+				bindKeys(Control.NOTE_UP,  [W]);    bindKeys(Control.NOTE_DOWN,[S]);
+				bindKeys(Control.NOTE_LEFT,[A]);    bindKeys(Control.NOTE_RIGHT,[D]);
+				bindKeys(Control.ACCEPT,   [G, Z]); bindKeys(Control.BACK,    [H, X]);
+				bindKeys(Control.PAUSE,    [ONE]);  bindKeys(Control.RESET,    [R]);
 			case Duo(false):
-				bindKeys(Control.UI_UP, [FlxKey.UP]); bindKeys(Control.UI_DOWN, [FlxKey.DOWN]);
-				bindKeys(Control.UI_LEFT, [FlxKey.LEFT]); bindKeys(Control.UI_RIGHT, [FlxKey.RIGHT]);
-				bindKeys(Control.NOTE_UP, [FlxKey.UP]); bindKeys(Control.NOTE_DOWN, [FlxKey.DOWN]);
-				bindKeys(Control.NOTE_LEFT, [FlxKey.LEFT]); bindKeys(Control.NOTE_RIGHT, [FlxKey.RIGHT]);
-				bindKeys(Control.ACCEPT, [O]); bindKeys(Control.BACK, [P]);
-				bindKeys(Control.PAUSE, [ENTER]); bindKeys(Control.RESET, [BACKSPACE]);
+				bindKeys(Control.UI_UP,    [FlxKey.UP]);   bindKeys(Control.UI_DOWN,  [FlxKey.DOWN]);
+				bindKeys(Control.UI_LEFT,  [FlxKey.LEFT]); bindKeys(Control.UI_RIGHT, [FlxKey.RIGHT]);
+				bindKeys(Control.NOTE_UP,  [FlxKey.UP]);   bindKeys(Control.NOTE_DOWN,[FlxKey.DOWN]);
+				bindKeys(Control.NOTE_LEFT,[FlxKey.LEFT]); bindKeys(Control.NOTE_RIGHT,[FlxKey.RIGHT]);
+				bindKeys(Control.ACCEPT,   [O]);     bindKeys(Control.BACK,  [P]);
+				bindKeys(Control.PAUSE,    [ENTER]); bindKeys(Control.RESET, [BACKSPACE]);
 			case None:
 			case Custom:
 		}
@@ -616,32 +596,32 @@ class Controls extends FlxActionSet
 	{
 		#if !switch
 		addGamepadLiteral(id, [
-			Control.ACCEPT    => [A, START],
-			Control.BACK      => [B],
-			Control.PAUSE     => [START],
-			Control.RESET     => [GUIDE],
-			Control.UI_UP     => [DPAD_UP, LEFT_STICK_DIGITAL_UP],
-			Control.UI_DOWN   => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN],
-			Control.UI_LEFT   => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT],
-			Control.UI_RIGHT  => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT],
-			Control.NOTE_UP   => [DPAD_UP, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP, Y],
-			Control.NOTE_DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN, A],
-			Control.NOTE_LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT, X],
+			Control.ACCEPT     => [A, START],
+			Control.BACK       => [B],
+			Control.PAUSE      => [START],
+			Control.RESET      => [GUIDE],
+			Control.UI_UP      => [DPAD_UP,    LEFT_STICK_DIGITAL_UP],
+			Control.UI_DOWN    => [DPAD_DOWN,  LEFT_STICK_DIGITAL_DOWN],
+			Control.UI_LEFT    => [DPAD_LEFT,  LEFT_STICK_DIGITAL_LEFT],
+			Control.UI_RIGHT   => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT],
+			Control.NOTE_UP    => [DPAD_UP,    LEFT_STICK_DIGITAL_UP,    RIGHT_STICK_DIGITAL_UP,    Y],
+			Control.NOTE_DOWN  => [DPAD_DOWN,  LEFT_STICK_DIGITAL_DOWN,  RIGHT_STICK_DIGITAL_DOWN,  A],
+			Control.NOTE_LEFT  => [DPAD_LEFT,  LEFT_STICK_DIGITAL_LEFT,  RIGHT_STICK_DIGITAL_LEFT,  X],
 			Control.NOTE_RIGHT => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT, B],
 		]);
 		#else
 		addGamepadLiteral(id, [
-			Control.ACCEPT    => [B, START],
-			Control.BACK      => [A],
-			Control.PAUSE     => [START],
-			Control.RESET     => [GUIDE],
-			Control.UI_UP     => [DPAD_UP, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP],
-			Control.UI_DOWN   => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN],
-			Control.UI_LEFT   => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT],
-			Control.UI_RIGHT  => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT],
-			Control.NOTE_UP   => [DPAD_UP, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP, X],
-			Control.NOTE_DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN, B],
-			Control.NOTE_LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT, Y],
+			Control.ACCEPT     => [B, START],
+			Control.BACK       => [A],
+			Control.PAUSE      => [START],
+			Control.RESET      => [GUIDE],
+			Control.UI_UP      => [DPAD_UP,    LEFT_STICK_DIGITAL_UP,    RIGHT_STICK_DIGITAL_UP],
+			Control.UI_DOWN    => [DPAD_DOWN,  LEFT_STICK_DIGITAL_DOWN,  RIGHT_STICK_DIGITAL_DOWN],
+			Control.UI_LEFT    => [DPAD_LEFT,  LEFT_STICK_DIGITAL_LEFT,  RIGHT_STICK_DIGITAL_LEFT],
+			Control.UI_RIGHT   => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT],
+			Control.NOTE_UP    => [DPAD_UP,    LEFT_STICK_DIGITAL_UP,    RIGHT_STICK_DIGITAL_UP,    X],
+			Control.NOTE_DOWN  => [DPAD_DOWN,  LEFT_STICK_DIGITAL_DOWN,  RIGHT_STICK_DIGITAL_DOWN,  B],
+			Control.NOTE_LEFT  => [DPAD_LEFT,  LEFT_STICK_DIGITAL_LEFT,  RIGHT_STICK_DIGITAL_LEFT,  Y],
 			Control.NOTE_RIGHT => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT, A],
 		]);
 		#end
@@ -700,7 +680,7 @@ class Controls extends FlxActionSet
 	{
 		switch (device)
 		{
-			case Keys: setKeyboardScheme(None);
+			case Keys:       setKeyboardScheme(None);
 			case Gamepad(id): removeGamepad(id);
 		}
 	}
@@ -709,7 +689,7 @@ class Controls extends FlxActionSet
 	{
 		return switch device
 		{
-			case Keys: input.device == KEYBOARD;
+			case Keys:       input.device == KEYBOARD;
 			case Gamepad(id): isGamepad(input, id);
 		}
 	}
@@ -717,33 +697,79 @@ class Controls extends FlxActionSet
 	inline static function isGamepad(input:FlxActionInput, deviceID:Int):Bool
 		return input.device == GAMEPAD && (deviceID == FlxInputDeviceID.ALL || input.deviceID == deviceID);
 
-	inline function _getMobileResult(id:MobileInputID, check:mobile.objects.TouchPad->MobileInputID->Bool):Bool
+	public function mobileControlsJustPressed(id:MobileInputID):Bool
 	{
+		#if mobile
 		final state = MusicBeatState.getState();
-		final sub = MusicBeatSubstate.instance;
-
+		final sub   = MusicBeatSubstate.instance;
 		if (state != null)
 		{
-			if (state.touchPad != null && check(state.touchPad, id)) return true;
-			if (state.mobileControls != null && check(state.mobileControls.instance, id)) return true;
+			if (state.touchPad != null     && state.touchPad.buttonJustPressed(id))             return true;
+			if (state.mobileControls != null && state.mobileControls.instance.buttonJustPressed(id)) return true;
 		}
 		if (sub != null)
 		{
-			if (sub.touchPad != null && check(sub.touchPad, id)) return true;
-			if (sub.mobileControls != null && check(sub.mobileControls.instance, id)) return true;
+			if (sub.touchPad != null     && sub.touchPad.buttonJustPressed(id))             return true;
+			if (sub.mobileControls != null && sub.mobileControls.instance.buttonJustPressed(id)) return true;
 		}
+		#end
 		return false;
 	}
 
-	public inline function mobileControlsJustPressed(id:MobileInputID):Bool
-		return _getMobileResult(id, (pad, i) -> pad.buttonJustPressed(i));
+	public function mobileControlsJustReleased(id:MobileInputID):Bool
+	{
+		#if mobile
+		final state = MusicBeatState.getState();
+		final sub   = MusicBeatSubstate.instance;
+		if (state != null)
+		{
+			if (state.touchPad != null     && state.touchPad.buttonJustReleased(id))             return true;
+			if (state.mobileControls != null && state.mobileControls.instance.buttonJustReleased(id)) return true;
+		}
+		if (sub != null)
+		{
+			if (sub.touchPad != null     && sub.touchPad.buttonJustReleased(id))             return true;
+			if (sub.mobileControls != null && sub.mobileControls.instance.buttonJustReleased(id)) return true;
+		}
+		#end
+		return false;
+	}
 
-	public inline function mobileControlsJustReleased(id:MobileInputID):Bool
-		return _getMobileResult(id, (pad, i) -> pad.buttonJustReleased(i));
+	public function mobileControlsPressed(id:MobileInputID):Bool
+	{
+		#if mobile
+		final state = MusicBeatState.getState();
+		final sub   = MusicBeatSubstate.instance;
+		if (state != null)
+		{
+			if (state.touchPad != null     && state.touchPad.buttonPressed(id))             return true;
+			if (state.mobileControls != null && state.mobileControls.instance.buttonPressed(id)) return true;
+		}
+		if (sub != null)
+		{
+			if (sub.touchPad != null     && sub.touchPad.buttonPressed(id))             return true;
+			if (sub.mobileControls != null && sub.mobileControls.instance.buttonPressed(id)) return true;
+		}
+		#end
+		return false;
+	}
 
-	public inline function mobileControlsPressed(id:MobileInputID):Bool
-		return _getMobileResult(id, (pad, i) -> pad.buttonPressed(i));
-
-	public inline function mobileControlsReleased(id:MobileInputID):Bool
-		return _getMobileResult(id, (pad, i) -> pad.buttonReleased(i));
+	public function mobileControlsReleased(id:MobileInputID):Bool
+	{
+		#if mobile
+		final state = MusicBeatState.getState();
+		final sub   = MusicBeatSubstate.instance;
+		if (state != null)
+		{
+			if (state.touchPad != null     && state.touchPad.buttonReleased(id))             return true;
+			if (state.mobileControls != null && state.mobileControls.instance.buttonReleased(id)) return true;
+		}
+		if (sub != null)
+		{
+			if (sub.touchPad != null     && sub.touchPad.buttonReleased(id))             return true;
+			if (sub.mobileControls != null && sub.mobileControls.instance.buttonReleased(id)) return true;
+		}
+		#end
+		return false;
+	}
 }
