@@ -66,7 +66,7 @@ class ModchartEditorState extends MusicBeatState
 	static inline var PIXELS_PER_BEAT:Float = 80;
 	static inline var MIN_ZOOM:Float        = 0.25;
 	static inline var MAX_ZOOM:Float        = 4.0;
-	static inline var SNAP_VALUES:Array<Float> = [1, 0.5, 0.25, 0.125, 0.0625];
+	static var SNAP_VALUES:Array<Float> = [1, 0.5, 0.25, 0.125, 0.0625];
 
 	var camUI:FlxCamera;
 	var camTimeline:FlxCamera;
