@@ -741,7 +741,7 @@ class ModchartEditorState extends MusicBeatState
 		if (FlxG.keys.justPressed.HOME)  { currentBeat = 0; timelineScrollX = 0; _rebuildBeatLines(); _rebuildTracks(); }
 		if (FlxG.keys.justPressed.END)   { currentBeat = _getLastBeat(); }
 
-		if (FlxG.keys.justPressed.EQUALS || FlxG.keys.justPressed.NUMPADPLUS)  _changeZoom(1.2);
+		if (FlxG.keys.justPressed.PLUS || FlxG.keys.justPressed.NUMPADPLUS)  _changeZoom(1.2);
 		if (FlxG.keys.justPressed.MINUS  || FlxG.keys.justPressed.NUMPADMINUS) _changeZoom(0.83);
 
 		if (FlxG.keys.justPressed.LBRACKET)  { snapIndex = Std.int(Math.min(snapIndex + 1, SNAP_VALUES.length - 1)); _updateSnapText(); }
