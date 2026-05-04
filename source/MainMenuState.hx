@@ -123,9 +123,6 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollowPos, null, 1);
 
-		var appName:String = Application.current.meta.get('title') ?? 'Cherry Engine';
-var appVersion:String = Application.current.meta.get('version') ?? '0.1.0';
-
 		var versionText:FlxText = new FlxText(12, FlxG.height - 24, 0, '$appName v$appVersion', 12);
 		versionText.scrollFactor.set();
 		versionText.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
