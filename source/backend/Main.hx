@@ -1,10 +1,8 @@
 package backend;
 
-import flixel.graphics.FlxGraphic;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
-import openfl.Assets;
 import openfl.Lib;
 import openfl.display.Sprite;
 import openfl.events.Event;
@@ -13,6 +11,7 @@ import openfl.system.System;
 import lime.app.Application;
 #if mobile
 import mobile.CopyState;
+import mobile.backend.MobileScaleMode;
 #end
 #if cpp
 import cpp.vm.Gc;
@@ -64,10 +63,8 @@ class Main extends Sprite
 
 		super();
 
-		if (stage != null)
-			init();
-		else
-			addEventListener(Event.ADDED_TO_STAGE, init);
+		if (stage != null) init();
+		else addEventListener(Event.ADDED_TO_STAGE, init);
 	}
 
 	private function init(?e:Event):Void
@@ -137,7 +134,6 @@ class Main extends Sprite
 		});
 
 		FlxG.signals.gameResized.add(onGameResized);
-
 		FlxG.signals.focusGained.add(onFocusGained);
 		FlxG.signals.focusLost.add(onFocusLost);
 	}
@@ -161,13 +157,14 @@ class Main extends Sprite
 	private function setupPlatform():Void
 	{
 		#if html5
-		FlxG.autoPause      = false;
-		FlxG.mouse.visible  = false;
+		FlxG.autoPause     = false;
+		FlxG.mouse.visible = false;
 		#end
 
 		#if mobile
-		FlxG.autoPause      = false;
-		FlxG.fixedTimestep  = false;
+		FlxG.autoPause     = false;
+		FlxG.fixedTimestep = false;
+		FlxG.scaleMode     = new MobileScaleMode();
 		lime.system.System.allowScreenTimeout = ClientPrefs.screensaver;
 		#if android
 		FlxG.android.preventDefaultKeys = [BACK];
@@ -229,10 +226,10 @@ class Main extends Sprite
 	{
 		@:privateAccess
 		{
-			sprite.__cacheBitmap             = null;
-			sprite.__cacheBitmapData         = null;
-			sprite.__cacheBitmapData2        = null;
-			sprite.__cacheBitmapData3        = null;
+			sprite.__cacheBitmap              = null;
+			sprite.__cacheBitmapData          = null;
+			sprite.__cacheBitmapData2         = null;
+			sprite.__cacheBitmapData3         = null;
 			sprite.__cacheBitmapColorTransform = null;
 		}
 	}
@@ -248,11 +245,17 @@ class Main extends Sprite
 		System.gc();
 	}
 
-	public static function getAppVersion():String
-		return Application.current.meta.get('version');
-
 	public static function getAppTitle():String
-		return Application.current.meta.get('title');
+	{
+		var t = Application.current.meta.get('title');
+		return t != null ? t : 'FNF: Cherry Engine';
+	}
+
+	public static function getAppVersion():String
+	{
+		var v = Application.current.meta.get('version');
+		return v != null ? v : '0.1.0';
+	}
 
 	public static function setFPSVisible(v:Bool):Void
 	{
