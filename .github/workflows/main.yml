@@ -1,43 +1,127 @@
-name: Main
-on: workflow_dispatch
+name: Cherry Engine — Build
 
-# permissions: write-all
+on:
+  workflow_dispatch:
+    inputs:
+      targets:
+        description: 'Targets to build (comma-separated: Windows,Linux,MacOS,Android,iOS) or "all"'
+        required: false
+        default: 'all'
+        type: string
+      debug:
+        description: 'Debug build'
+        required: false
+        default: false
+        type: boolean
+      upload:
+        description: 'Upload artifacts'
+        required: false
+        default: true
+        type: boolean
+
+  push:
+    branches: [main, master, dev]
+    paths:
+      - 'source/**'
+      - 'assets/**'
+      - 'Project.xml'
+      - 'project.hxp'
+      - 'hmm.json'
+      - '.github/workflows/**'
+
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'source/**'
+      - 'Project.xml'
+      - 'project.hxp'
+      - 'hmm.json'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  Build:
+  setup:
+    name: Resolve Targets
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.resolve.outputs.matrix }}
+    steps:
+      - name: Resolve Build Matrix
+        id: resolve
+        shell: bash
+        run: |
+          INPUT="${{ github.event.inputs.targets || 'all' }}"
+          DEBUG="${{ github.event.inputs.debug || 'false' }}"
+          SUFFIX=""
+          if [ "$DEBUG" = "true" ]; then SUFFIX=" -debug"; fi
+
+          ALL='[
+            {"name":"Windows","os":"windows-2022",   "buildArgs":"windows'"$SUFFIX"'",              "artifactName":"Windows","artifactPath":"export/release/windows/bin/*"},
+            {"name":"Linux",  "os":"ubuntu-22.04",   "buildArgs":"linux'"$SUFFIX"'",                "artifactName":"Linux",  "artifactPath":"export/release/linux/bin/*"},
+            {"name":"MacOS",  "os":"macos-15",       "buildArgs":"mac'"$SUFFIX"'",                  "artifactName":"MacOS",  "artifactPath":"export/release/macos/bin/*"},
+            {"name":"Android","os":"macos-15",       "buildArgs":"android -ONLY_ARM64'"$SUFFIX"'",  "artifactName":"Android","artifactPath":"export/release/android/bin/app/build/outputs/apk/release/*.apk"},
+            {"name":"iOS",    "os":"macos-15",       "buildArgs":"ios -nosign'"$SUFFIX"'",          "artifactName":"iOS",    "artifactPath":"export/release/ios/build/Release-iphoneos/*.ipa"}
+          ]'
+
+          if [ "$INPUT" = "all" ]; then
+            MATRIX="{\"include\":$ALL}"
+          else
+            FILTERED="["
+            FIRST=true
+            IFS=',' read -ra TARGETS <<< "$INPUT"
+            for T in "${TARGETS[@]}"; do
+              T=$(echo "$T" | tr -d ' ')
+              ENTRY=$(echo "$ALL" | python3 -c "import sys,json; d=json.load(sys.stdin); t='$T'; r=[x for x in d if x['name']==t]; print(json.dumps(r[0]) if r else '')")
+              if [ -n "$ENTRY" ]; then
+                if [ "$FIRST" = "true" ]; then FIRST=false; else FILTERED="$FILTERED,"; fi
+                FILTERED="$FILTERED$ENTRY"
+              fi
+            done
+            FILTERED="$FILTERED]"
+            MATRIX="{\"include\":$FILTERED}"
+          fi
+
+          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
+
+  build:
     name: ${{ matrix.name }}
+    needs: setup
     strategy:
-      matrix:
-        include:
-          - name: Windows
-            os: windows-2022
-            buildArgs: windows
-            artifactName: Windows
-            artifactPath: export\release\windows\bin\*
-          - name: Linux
-            os: ubuntu-22.04
-            buildArgs: linux
-            artifactName: Linux
-            artifactPath: export/release/linux/bin/*
-          - name: MacOS
-            os: macos-15
-            buildArgs: mac
-            artifactName: MacOS
-            artifactPath: export/release/macos/bin/*
-          - name: Android
-            os: macos-15
-            buildArgs: "android -ONLY_ARM64"
-            artifactName: Android
-            artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
-          - name: iOS
-            os: macos-15
-            buildArgs: "ios -nosign"
-            artifactName: IOS
-            artifactPath: "export/release/ios/build/Release-iphoneos/*.ipa"
+      fail-fast: false
+      matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
     uses: ./.github/workflows/build.yml
     with:
-        name: ${{ matrix.name }}
-        os: ${{ matrix.os }}
-        buildArgs: ${{ matrix.buildArgs }}
-        artifactName: ${{ matrix.artifactName }}
-        artifactPath: ${{ matrix.artifactPath }}
+      name:           ${{ matrix.name }}
+      os:             ${{ matrix.os }}
+      buildArgs:      ${{ matrix.buildArgs }}
+      artifactName:   ${{ matrix.artifactName }}
+      artifactPath:   ${{ matrix.artifactPath }}
+      uploadArtifact: ${{ github.event.inputs.upload != 'false' }}
+
+  summary:
+    name: Build Summary
+    runs-on: ubuntu-latest
+    needs: build
+    if: always()
+    steps:
+      - name: Write Summary
+        shell: bash
+        run: |
+          echo "## 🍒 Cherry Engine Build Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Target | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|--------|" >> $GITHUB_STEP_SUMMARY
+          RESULT="${{ needs.build.result }}"
+          if [ "$RESULT" = "success" ]; then
+            echo "| All targets | ✅ Success |" >> $GITHUB_STEP_SUMMARY
+          elif [ "$RESULT" = "failure" ]; then
+            echo "| One or more targets | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| All targets | ⚠️ $RESULT |" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Triggered by:** \`${{ github.event_name }}\` on \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Actor:** @${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
