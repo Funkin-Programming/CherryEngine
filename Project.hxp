@@ -1,0 +1,228 @@
+import lime.project.*;
+import lime.tools.HXProject;
+
+class Project extends HXProject
+{
+	static inline var PKG_NAME:String    = "com.brenninho.cherryengine";
+	static inline var APP_FILE:String    = "CherryEngine";
+	static inline var APP_COMPANY:String = "Brenninho";
+	static inline var APP_VERSION:String = "0.1.0";
+	static inline var APP_MAIN:String    = "backend.Main";
+
+	static inline var GAME_W:Int = 1280;
+	static inline var GAME_H:Int = 720;
+
+	public function new()
+	{
+		super();
+		_setupApp();
+		_setupWindows();
+		_setupPaths();
+		_setupDefines();
+		_setupAssets();
+		_setupLibraries();
+		_setupHaxelibs();
+		_setupHaxedefs();
+		_setupSigning();
+		_setupIcons();
+	}
+
+	function _isDesktop():Bool  return (target == WINDOWS || target == MAC || target == LINUX);
+	function _isMobile():Bool   return (target == ANDROID || target == IOS);
+	function _isAndroid():Bool  return target == ANDROID;
+	function _isWeb():Bool      return target == HTML5;
+	function _isSwitch():Bool   return target == SWITCH;
+	function _isDebug():Bool    return debug;
+	function _is32bit():Bool    return defines.exists("32bits");
+
+	function _setupApp()
+	{
+		var titleFull  = "Friday Night Funkin': Cherry Engine";
+		var titleShort = "FNF: Cherry Engine";
+
+		app.title       = _isMobile() ? titleShort : titleFull;
+		app.file        = APP_FILE;
+		app.packageName = PKG_NAME;
+		app.main        = APP_MAIN;
+		app.version     = APP_VERSION;
+		app.company     = APP_COMPANY;
+		app.preloader   = "flixel.system.FlxPreloader";
+
+		meta.set("APP_ID", "0x0100f6c013bbc000");
+	}
+
+	function _setupWindows()
+	{
+		window.background = 0x000000;
+		window.hardware   = true;
+		window.vsync      = false;
+
+		if (_isDesktop())
+		{
+			window.width       = GAME_W;
+			window.height      = GAME_H;
+			window.orientation = "landscape";
+			window.fullscreen  = false;
+			window.resizable   = true;
+		}
+		else if (_isMobile())
+		{
+			window.width        = 0;
+			window.height       = 0;
+			window.orientation  = "landscape";
+			window.fullscreen   = true;
+			window.resizable    = false;
+			window.allowShaders = true;
+			window.requireShaders = true;
+		}
+		else if (_isSwitch())
+		{
+			window.width      = 0;
+			window.height     = 0;
+			window.orientation = "landscape";
+			window.fullscreen = true;
+			window.resizable  = true;
+		}
+		else if (_isWeb())
+		{
+			window.width    = GAME_W;
+			window.height   = GAME_H;
+			window.resizable = true;
+		}
+	}
+
+	function _setupPaths()
+	{
+		var buildDir = _is32bit() ? "export/32bit" : (_isDebug() ? "export/debug" : "export/release");
+		meta.set("BUILD_DIR", buildDir);
+
+		sources.push("source");
+	}
+
+	function _setupDefines()
+	{
+		if (_isDesktop() || _isMobile())
+		{
+			defines.set("MODS_ALLOWED", 1);
+			defines.set("LUA_ALLOWED",  1);
+		}
+
+		defines.set("ACHIEVEMENTS_ALLOWED", 1);
+
+		if ((_isDesktop() || _isAndroid()) && !_is32bit())
+			defines.set("VIDEOS_ALLOWED", 1);
+
+		defines.set("PSYCH_WATERMARKS", 1);
+
+		if (_isDesktop())
+			defines.set("DISCORD_ALLOWED", 1);
+
+		if (_isMobile())
+			defines.set("SHARE_MOBILE_FILES", 1);
+
+		if (!_isWeb())
+			defines.set("PRELOAD_ALL", 1);
+		else
+			defines.set("NO_PRELOAD_ALL", 1);
+
+		defines.set("hscriptPos", 1);
+		defines.set("no-deprecation-warnings", 1);
+	}
+
+	function _setupAssets()
+	{
+		var audioExclude = _isWeb() ? "*.ogg" : "*.mp3";
+
+		assets.push({path: "assets/preload", rename: "assets", exclude: audioExclude});
+
+		if (defines.exists("VIDEOS_ALLOWED"))
+			assets.push({path: "assets/videos", library: "videos"});
+
+		for (lib in ["songs","shared","week2","week3","week4","week5","week6","week7"])
+			assets.push({path: 'assets/$lib', library: lib, exclude: audioExclude});
+
+		if (defines.exists("MODS_ALLOWED"))
+			assets.push({path: "example_mods", rename: "mods", embed: false});
+
+		if (!_isMobile())
+			assets.push({path: "art/readme.txt", rename: "do NOT readme.txt"});
+
+		assets.push({path: "assets/fonts", embed: true});
+	}
+
+	function _setupLibraries()
+	{
+		var preloadAll = defines.exists("PRELOAD_ALL");
+
+		if (defines.exists("VIDEOS_ALLOWED"))
+			libraries.push({name: "videos", preload: true});
+
+		var libList = ["songs","shared","week2","week3","week4","week5","week6","week7"];
+		for (i in 0...libList.length)
+			libraries.push({name: libList[i], preload: preloadAll || i == 0});
+	}
+
+	function _setupHaxelibs()
+	{
+		haxelibs.push({name: "flixel"});
+		haxelibs.push({name: "flixel-addons"});
+		haxelibs.push({name: "hscript"});
+		haxelibs.push({name: "flixel-ui"});
+
+		if (defines.exists("LUA_ALLOWED"))
+			haxelibs.push({name: "linc_luajit"});
+
+		if (defines.exists("VIDEOS_ALLOWED"))
+			haxelibs.push({name: "hxCodec"});
+
+		if (_isSwitch())
+			haxelibs.push({name: "faxe"});
+
+		if (defines.exists("DISCORD_ALLOWED"))
+			haxelibs.push({name: "discord_rpc"});
+	}
+
+	function _setupHaxedefs()
+	{
+		haxeflags.push("-D LINC_LUA_RELATIVE_DYNAMIC_LIB");
+		haxeflags.push("-D FLX_NO_FOCUS_LOST_SCREEN");
+
+		if (_isDebug())
+			haxeflags.push("-D HXC_DEBUG_TRACE");
+		else
+		{
+			haxeflags.push("-D FLX_NO_DEBUG");
+			haxeflags.push("-D NAPE_RELEASE_BUILD");
+		}
+
+		if (target == CPP || _isAndroid())
+		{
+			haxeflags.push("-D HXCPP_CHECK_POINTER");
+			haxeflags.push("-D HXCPP_STACK_LINE");
+			haxeflags.push("-D HXCPP_STACK_TRACE");
+			haxeflags.push("-D HXCPP_CATCH_SEGV");
+		}
+	}
+
+	function _setupSigning()
+	{
+		if (_isAndroid() && !_isDebug())
+		{
+			certificate = {
+				path:          "key.keystore",
+				password:      "psychengine",
+				alias:         "psychengine",
+				aliasPassword: "psychengine",
+				store:         "JKS"
+			};
+		}
+	}
+
+	function _setupIcons()
+	{
+		icons.push({path: "art/icon16.png", size: 16});
+		icons.push({path: "art/icon32.png", size: 32});
+		icons.push({path: "art/icon64.png", size: 64});
+		icons.push({path: "art/iconOG.png"});
+	}
+}
