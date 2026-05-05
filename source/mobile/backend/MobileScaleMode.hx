@@ -1,7 +1,6 @@
 package mobile.backend;
 
 import flixel.FlxG;
-import openfl.display.StageDisplayState;
 import openfl.Lib;
 
 class MobileScaleMode extends flixel.system.scaleModes.BaseScaleMode
@@ -35,11 +34,13 @@ class MobileScaleMode extends flixel.system.scaleModes.BaseScaleMode
 		);
 	}
 
-	override function updateOffsets():Void
+	override function updateOffsetX():Void
 	{
-		offset.set(
-			Math.round((deviceSize.x - gameSize.x) / 2),
-			Math.round((deviceSize.y - gameSize.y) / 2)
-		);
+		offset.x = Math.round((deviceSize.x - gameSize.x) / 2);
+	}
+
+	override function updateOffsetY():Void
+	{
+		offset.y = Math.round((deviceSize.y - gameSize.y) / 2);
 	}
 }
