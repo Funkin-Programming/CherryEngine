@@ -18,6 +18,10 @@ on:
       artifactPath:
         required: true
         type: string
+      uploadArtifact:
+        required: false
+        type: boolean
+        default: true
 
 env:
   HAXE_VERSION: 4.2.5
@@ -25,12 +29,15 @@ env:
 
 jobs:
   build:
-    name: Build ${{ inputs.name }}
+    name: ${{ inputs.name }}
     runs-on: ${{ inputs.os }}
+    timeout-minutes: 60
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Setup Java 17
         if: inputs.name == 'Android'
@@ -39,26 +46,41 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Setup Haxe
+      - name: Setup Haxe ${{ env.HAXE_VERSION }}
         uses: krdlab/setup-haxe@master
         with:
           haxe-version: ${{ env.HAXE_VERSION }}
 
       - name: Install libVLC
         if: inputs.name == 'Linux'
-        run: sudo apt-get install -y libvlc-dev libvlccore-dev
+        run: sudo apt-get install -y --no-install-recommends libvlc-dev libvlccore-dev
 
-      - name: Cache Haxelibs
+      - name: Restore Haxelib Cache
+        id: cache-haxelib
         uses: actions/cache@v4
         with:
           path: ~/haxelib
-          key: haxelib-${{ inputs.name }}-${{ hashFiles('**/hmm.json') }}
-          restore-keys: haxelib-${{ inputs.name }}-
+          key: haxelib-${{ inputs.name }}-${{ env.HAXE_VERSION }}-${{ hashFiles('**/hmm.json') }}
+          restore-keys: |
+            haxelib-${{ inputs.name }}-${{ env.HAXE_VERSION }}-
+            haxelib-${{ inputs.name }}-
 
       - name: Install Libraries
         run: |
           haxelib install hmm --quiet
           haxelib run hmm install --quiet
+
+      - name: Restore hxcpp Cache
+        if: inputs.name != 'HTML5'
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.hxcpp
+            ~/.cache/hxcpp
+          key: hxcpp-${{ inputs.name }}-${{ env.HAXE_VERSION }}-${{ hashFiles('**/Project.xml', '**/project.hxp') }}
+          restore-keys: |
+            hxcpp-${{ inputs.name }}-${{ env.HAXE_VERSION }}-
+            hxcpp-${{ inputs.name }}-
 
       - name: Configure Android
         if: inputs.name == 'Android'
@@ -85,29 +107,49 @@ jobs:
 
       - name: Verify Keystore
         if: inputs.name == 'Android'
-        run: keytool -list -keystore key.keystore -storepass psychengine
-
-      - name: Cache hxcpp
-        uses: actions/cache@v4
-        with:
-          path: ~/.hxcpp
-          key: hxcpp-${{ inputs.name }}-${{ hashFiles('**/Project.xml') }}
-          restore-keys: hxcpp-${{ inputs.name }}-
+        run: keytool -list -v -keystore key.keystore -storepass psychengine
 
       - name: Compile
+        id: compile
         run: haxelib run lime build ${{ inputs.buildArgs }}
 
-      - name: Make IPA
-        if: inputs.name == 'iOS'
+      - name: Package IPA
+        if: inputs.name == 'iOS' && steps.compile.outcome == 'success'
         run: |
-          cd export/release/ios/build/Release-iphoneos
+          BUILD_DIR="export/release/ios/build/Release-iphoneos"
+          cd "$BUILD_DIR"
           mkdir -p Payload
-          mv *.app Payload
-          zip -r ${{ env.PROJECT_NAME }}.ipa Payload
+          mv *.app Payload/
+          zip -r9 "${{ env.PROJECT_NAME }}.ipa" Payload/
+          echo "IPA_PATH=$BUILD_DIR/${{ env.PROJECT_NAME }}.ipa" >> $GITHUB_ENV
+
+      - name: Collect Build Info
+        if: steps.compile.outcome == 'success'
+        shell: bash
+        run: |
+          echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "| Key | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Target | ${{ inputs.name }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Haxe | ${{ env.HAXE_VERSION }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Ref | ${{ github.ref_name }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| SHA | ${{ github.sha }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Runner | ${{ inputs.os }} |" >> $GITHUB_STEP_SUMMARY
 
       - name: Upload Artifact
+        if: inputs.uploadArtifact && steps.compile.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.artifactName }}
           path: ${{ inputs.artifactPath }}
           if-no-files-found: error
+          retention-days: 14
+          compression-level: 6
+
+      - name: Notify Failure
+        if: failure()
+        shell: bash
+        run: |
+          echo "::error::Build failed for ${{ inputs.name }} on ${{ inputs.os }}"
+          echo "## ❌ Build Failed" >> $GITHUB_STEP_SUMMARY
+          echo "Target **${{ inputs.name }}** failed. Check logs above." >> $GITHUB_STEP_SUMMARY
